@@ -5,3 +5,5 @@ pkg/
 
 .bundle
 *.lock
+
+build/node_modules/

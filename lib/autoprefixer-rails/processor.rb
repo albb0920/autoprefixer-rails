@@ -176,34 +176,10 @@ module AutoprefixerRails
       end
     end
 
-    # Cache autoprefixer.js content
-    def read_js
-      @read_js ||= begin
-        root = Pathname(File.dirname(__FILE__))
-        path = root.join("../../vendor/autoprefixer.js")
-        path.read
-      end
-    end
-
-    # Return processor JS with some extra methods
     def build_js
-      "var global = this;" + read_js + process_proxy
-    end
-
-    # Return JS code for process method proxy
-    def process_proxy
-      <<-JS
-        var processor;
-        var process = function() {
-          var result = autoprefixer.process.apply(autoprefixer, arguments);
-          var warns  = result.warnings().map(function (i) {
-            delete i.plugin;
-            return i.toString();
-          });
-          var map = result.map ? result.map.toString() : null;
-          return { css: result.css, map: map, warnings: warns };
-        };
-      JS
+      root = Pathname(File.dirname(__FILE__))
+      path = root.join("../../vendor/autoprefixer.js")
+      path.read
     end
   end
 end
